@@ -1,0 +1,6 @@
+{
+  "name": "LinkedIn Profile Optimizer",
+  "description": "An AI-powered assistant that optimizes your CV or LinkedIn profile for healthcare, clinic, and patient operations in the UAE and regional markets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
