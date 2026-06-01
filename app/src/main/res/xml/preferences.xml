@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Account">
+        <Preference
+            android:key="account_info"
+            android:title="Account Information"
+            android:summary="View your account details" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="App">
+        <Preference
+            android:key="app_version"
+            android:title="Version"
+            android:summary="1.0.0" />
+        <Preference
+            android:key="privacy"
+            android:title="Privacy Policy"
+            android:summary="View our privacy policy" />
+    </PreferenceCategory>
+</PreferenceScreen>
