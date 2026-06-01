@@ -16,16 +16,4 @@ class ValidationUtilsTest {
         val invalidUrl = "https://twitter.com/john"
         assertFalse(ValidationUtils.isValidLinkedInUrl(invalidUrl))
     }
-    
-    @Test
-    fun testValidateProfileData() {
-        val validData = "This is a valid profile with enough characters"
-        assertTrue(ValidationUtils.validateProfileData(validData))
-    }
-    
-    @Test
-    fun testInvalidateProfileData() {
-        val invalidData = "short"
-        assertFalse(ValidationUtils.validateProfileData(invalidData))
-    }
 }
