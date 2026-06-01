@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main, master, develop]
   workflow_dispatch:
+    inputs:
+      gemini_api_key:
+        description: 'Gemini API Key'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -22,23 +27,36 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Create .env file with API Key
+      - name: Create .env file
         run: |
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
-          cat .env
+          API_KEY="${{ secrets.GEMINI_API_KEY }}"
+          if [ -z "$API_KEY" ]; then
+            API_KEY="PLACEHOLDER_API_KEY"
+            echo "⚠️  WARNING: GEMINI_API_KEY secret not set. Using placeholder."
+          fi
+          echo "GEMINI_API_KEY=$API_KEY" > .env
+          echo "✅ .env file created"
 
-      - name: Build Debug APK with Gradle
-        run: gradle assembleDebug --stacktrace --info
-        continue-on-error: true
-
-      - name: Check Build Output
+      - name: List project structure
         run: |
-          if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
-            echo "✅ APK built successfully!"
-            ls -lh app/build/outputs/apk/debug/app-debug.apk
+          echo "📁 Project structure:"
+          find . -maxdepth 2 -type f -name "build.gradle*" | head -20
+
+      - name: Build Debug APK
+        run: gradle assembleDebug -x lint --stacktrace
+
+      - name: Find APK files
+        run: |
+          echo "🔍 Searching for APK files..."
+          find . -name "*.apk" -type f
+          echo ""
+          echo "📂 Checking build output directory:"
+          if [ -d "app/build/outputs/apk" ]; then
+            ls -lR app/build/outputs/apk/
           else
-            echo "❌ APK not found. Build may have failed."
-            find app/build -name "*.apk" 2>/dev/null || echo "No APK files found"
+            echo "❌ app/build/outputs/apk/ does not exist"
+            echo "📂 Listing app/build:"
+            ls -lR app/build/ 2>/dev/null | head -50
           fi
 
       - name: Upload APK to Artifacts
@@ -46,5 +64,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: LinkOpt-Debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            app/build/outputs/apk/**/*.apk
+            **/build/outputs/apk/**/*.apk
           retention-days: 30
