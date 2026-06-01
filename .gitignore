@@ -1,18 +1,79 @@
-*.iml
-.gradle
-.kotlin
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# Gradle files
+.gradle/
+build/
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Local configuration file (sdk path, etc)
 local.properties
+google-services.json
 .env
-debug.keystore
+
+# Log/OS Files
+*.log
+.DS_Store
+
+# Android Studio generated files and folders
+.idea/
+.gradle
+.settings/
+bin/
+local.properties
+*.iml
+*.apk
+*.ap_
+*.dex
+*.class
+.classpath
+.eclipse project files
+.externalToolBuilders/
+.loadpath
+.metadata
+.project
+.pydevproject
+.settings/
+*.swp
+*~.nib
+local.properties
+.cproject
+.c9/
+*.launch
+.scale-managed
+.statistic
+
+# IntelliJ
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+*~
+.classpath
+.c9/
+*.class
+*.ctxt
+.mtj.tmp/
+*.jar
+*.nar
+*.zip
+*.tar.gz
+*.rar
+.gradle/
+.idea/
+*.iml
+.DS_Store
+os.log
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# node_modules
+node_modules/
+package-lock.json
+
+# Firebase emulator
+emulator-debug.log
