@@ -22,29 +22,31 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Build Debug APK (with verbose output)
-        run: gradle assembleDebug --stacktrace --info 2>&1 | tee build.log
-
-      - name: Display Build Log
-        if: always()
+      - name: Create Debug Keystore
         run: |
-          echo "=== GRADLE BUILD LOG ==="
-          cat build.log | tail -100
+          keytool -genkey -v -keystore debug.keystore -alias androiddebugkey \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -keypass android -storepass android \
+            -dname "CN=Android Debug,O=Android,C=US"
+          ls -lh debug.keystore
 
-      - name: Find APK files
+      - name: Build Debug APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Find and list APK files
         if: always()
         run: |
           echo "🔍 Searching for APK files..."
           find . -name "*.apk" -type f -exec ls -lh {} \;
           echo ""
           echo "📂 Build output structure:"
-          if [ -d "app/build" ]; then
-            find app/build -type d -name "outputs" -o -name "apk" | head -20
+          if [ -d "app/build/outputs/apk" ]; then
+            find app/build/outputs/apk -type f
           fi
 
       - name: Upload APK to Artifacts
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: LinkOpt-Debug-APK
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
